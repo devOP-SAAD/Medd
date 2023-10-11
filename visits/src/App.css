@@ -1,0 +1,10 @@
+/* styles.css */
+.light-theme {
+  background-color: white;
+  color: firebrick;
+}
+
+.dark-theme {
+  background-color: khaki;
+  color: white;
+}
