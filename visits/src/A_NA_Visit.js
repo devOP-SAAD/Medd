@@ -84,6 +84,7 @@ const PatientList = () => {
           serviceProvider: 'MediCare Corp.',
           imeiNo: '54321',
           status: 'inactive',
+          
         },
         {
           id: 8,
