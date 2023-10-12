@@ -35,14 +35,29 @@ function LoginPage() {
     }
   };
 
+
+  const centerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+  };
   return (
     <Grid container xs={12} lg={12}  style={{ height: '650px' }}>
      
     <Grid   xs={12} lg={6} style={{background:'#01619B'}}>
-      <Typography><span style={{fontSize:'30px',color:'white',fontFamily:'serif'}}>Welcome to the <br/>MEDIREMOTE</span></Typography>
+      
+    <Grid container style={centerStyle}>
+      <Typography style={{ textAlign: 'center' }}>
+        <span style={{ fontSize: '30px', color: 'white', fontFamily: 'serif', fontWeight: 'bold' }}>Welcome to the <br />MEDIREMOTE</span><br />
+        <span style={{ color: 'white' }}>A Brand Of E-HealthCare System and <br /> Wireless Communications. Current and <br />
+          Future Challenges</span><br />
+        <span style={{ color: 'white' }}>copyright @ 2023 MEDIREMOTE. All Rights Reserved</span>
+      </Typography>
     </Grid>
 
-
+    </Grid>
 
 
 
