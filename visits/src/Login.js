@@ -22,8 +22,7 @@ function LoginPage() {
         localStorage.setItem('userId', user.id);
         // Redirect to the dashboard or another page upon successful login.
         // Replace '/dashboard' with your desired route.
-        alert(username + '  login sucessfully');
-
+        window.location.replace('http://www.mediremote.com/');
         // Clear the input fields
         setUsername('');
         setPassword('');
@@ -49,7 +48,7 @@ function LoginPage() {
     <Grid   xs={12} lg={6} style={{background:'#01619B'}}>
       
     <Grid container style={centerStyle}>
-      <Typography style={{ textAlign: 'center' }}>
+      <Typography  >
         <span style={{ fontSize: '30px', color: 'white', fontFamily: 'serif', fontWeight: 'bold' }}>Welcome to the <br />MEDIREMOTE</span><br />
         <span style={{ color: 'white' }}>A Brand Of E-HealthCare System and <br /> Wireless Communications. Current and <br />
           Future Challenges</span><br />
@@ -85,7 +84,7 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div sx={{ marginTop: 2 }}>
-              <Button type="submit" variant="contained" color="primary" fullWidth style={{ margin: '10px' }}>
+              <Button type="submit" variant="contained" color="primary" fullWidth style={{ margin: '10px',borderRadius:'30px' }}>
                 Login
               </Button>
             </div>
