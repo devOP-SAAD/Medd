@@ -22,7 +22,7 @@ function LoginPage() {
         localStorage.setItem('userId', user.id);
         // Redirect to the dashboard or another page upon successful login.
         // Replace '/dashboard' with your desired route.
-        window.location.replace('http://www.mediremote.com/');
+        alert('Success')
         // Clear the input fields
         setUsername('');
         setPassword('');
@@ -49,7 +49,7 @@ function LoginPage() {
       
     <Grid container style={centerStyle}>
       <Typography  >
-        <span style={{ fontSize: '30px', color: 'white', fontFamily: 'serif', fontWeight: 'bold' }}>Welcome to the <br />MEDIREMOTE</span><br />
+        <span style={{ fontSize: '30px', color: 'white', fontFamily: 'serif', fontWeight: 'bold' }}>Welcome to the <br />MEDIREMOTE</span><br /><br />
         <span style={{ color: 'white' }}>A Brand Of E-HealthCare System and <br /> Wireless Communications. Current and <br />
           Future Challenges</span><br />
         <span style={{ color: 'white' }}>copyright @ 2023 MEDIREMOTE. All Rights Reserved</span>
