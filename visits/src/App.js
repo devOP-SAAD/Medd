@@ -1,22 +1,28 @@
-// src/App.js
-import React from 'react';
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom';
+import LoginPage from './LoginPage';
 import Dashboard from './Dashboard';
-import Login from './Login';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+
   return (
     <div className="App">
-      
-
-<Router>
-<Routes>
-<Route path="/" element={<Login/>}/>
-<Route path="/Dashboard" element={<Dashboard/>}/>
-</Routes>
-</Router>
-
-
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage setAuthenticated={setAuthenticated} authenticated={authenticated} />} />
+          <Route
+            path="/Dashboard"
+            element={
+              <ProtectedRoute authenticated={authenticated}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
     </div>
   );
 }
