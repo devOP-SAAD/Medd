@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
-import { Grid, Typography, TextField, Button, Link } from '@mui/material';
+import { Grid, Typography, TextField, Button, Link } from '@mui/material'; // Import Material-UI components
+import { useNavigate } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton'; // Import Material-UI components
+import InputAdornment from '@mui/material/InputAdornment'; // Import Material-UI components
+import VisibilityIcon from '@mui/icons-material/Visibility'; // Import Material-UI components
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'; // Import Material-UI components
 
 function LoginPage() {
-  const [isSignUp, setIsSignUp] = useState(false);
+  // State variables
+  const [isSignUp, setIsSignUp] = useState(false); // Tracks whether the user is signing up or logging in
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
-  });
-  const [registeredUsers, setRegisteredUsers] = useState([]);
+  }); // Stores user input data
+  const [registeredUsers, setRegisteredUsers] = useState([]); // Stores registered users
+  const navigate = useNavigate(); // Helps with navigation in React Router
 
+  // Function to toggle between sign-up and login forms
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
   };
 
+
+
+  // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Function to toggle password visibility
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Function to handle changes in input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -22,11 +41,12 @@ function LoginPage() {
     });
   };
 
+  // Function to handle form submission (either sign-up or login)
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (isSignUp) {
-      // Handle signup logic by adding the formData to the list of registered users.
+      // Handle signup logic by adding the formData to the list of registered users
       setRegisteredUsers([...registeredUsers, formData]);
       console.log('Signup data:', formData);
       alert('Signup successful. Please login.');
@@ -38,13 +58,13 @@ function LoginPage() {
         password: '',
       });
     } else {
-      // Handle login logic by checking if the entered data matches any registered user.
+      // Handle login logic by checking if the entered data matches any registered user
       const matchingUser = registeredUsers.find(
         (user) => user.email === formData.email && user.password === formData.password
       );
       if (matchingUser) {
         console.log('Login data:', formData);
-        alert('Login successful.');
+        navigate('/Dashboard'); // Navigate to the dashboard page upon successful login
       } else {
         console.log('Login data:', formData);
         alert('Incorrect email or password. Please try again.');
@@ -52,6 +72,7 @@ function LoginPage() {
     }
   };
 
+  // Styling for centering the form
   const centerStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -61,18 +82,18 @@ function LoginPage() {
   };
 
   return (
-    <Grid container xs={12} lg={12} justify="center" alignItems="center" style={{ height: '650px' }}>
+    <Grid container xs={12} lg={12} justifyContent="center" alignItems="center" style={{ height: '650px' }}>
       <Grid xs={12} md={6} lg={6}>
         <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }} onSubmit={handleSubmit}>
           <TextField
-            label={isSignUp ? "Full Name" : "Email"}
+            label={isSignUp ? "Full Name" : "Email"} // Conditional label based on sign-up or login
             required
-            name={isSignUp ? "fullName" : "email"}
+            name={isSignUp ? "fullName" : "email"} // Conditional name based on sign-up or login
             value={formData[isSignUp ? "fullName" : "email"]}
             onChange={handleChange}
             style={{ width: '100%', maxWidth: '400px', margin: '10px' }}
           />
-          {isSignUp && (
+          {isSignUp && ( // Show additional email field only during sign-up
             <TextField
               label="Email"
               required
@@ -83,26 +104,34 @@ function LoginPage() {
             />
           )}
           <TextField
-            type="password"
-            label={isSignUp ? "Create Password" : "Password"}
+            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+            label={isSignUp ? 'Create Password' : 'Password'} // Conditional label based on sign-up or login
             required
-            name={isSignUp ? "password" : "password"}
+            name={isSignUp ? 'password' : 'password'} // Conditional name based on sign-up or login
             value={formData.password}
             onChange={handleChange}
             style={{ width: '100%', maxWidth: '400px', margin: '10px' }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleTogglePasswordVisibility}>
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
           <div style={{ marginTop: '20px', width: '100%', maxWidth: '400px' }}>
             <Button type="submit" variant="contained" color="primary" style={{ width: '100%', borderRadius: '30px' }}>
-              {isSignUp ? "Sign up" : "Login"}
+              {isSignUp ? "Sign up" : "Login"} {/* Conditional button text */}
             </Button>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-            {isSignUp ? (
-              <Link onClick={toggleSignUp} style={{ color: 'blue' }}>Back to Login</Link>
-            ) : (
-              <Link onClick={toggleSignUp} style={{ color: 'blue' }}>Sign up</Link>
-            )}
-          </div>
+         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+  <Link onClick={() => toggleSignUp(!isSignUp)} style={{ color: 'blue' }}>
+    {isSignUp ? 'Back to Login' : 'Sign up'}
+  </Link>
+</div>
         </form>
       </Grid>
       <Grid xs={12} lg={6} style={{ background: '#01619B' }}>
