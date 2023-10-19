@@ -4,6 +4,8 @@ import './Dashboard.css';
 
 function Dashboard() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showITEmployees, setShowITEmployees] = useState(false);
+  const [showInternes, setShowInternes] = useState(false); // Add this state
 
   const handleImageClick = (imageSrc) => {
     setSelectedImage(imageSrc);
@@ -13,58 +15,120 @@ function Dashboard() {
     setSelectedImage(null);
   };
 
+  const employees = [
+    {
+      group: "IT Employees",
+      members: [
+        {
+          name: "Faseeh Haider",
+          role: "Team Lead",
+          imageSrc: "./5.png",
+        },
+        {
+          name: "Taqi Ali",
+          role: "React Developer",
+          imageSrc: "./5.png",
+        },
+        // Add more IT employees here
+      ],
+    },
+    {
+      group: "Internes",
+      members: [
+        {
+          name: "Saad",
+          role: "React Developer",
+          imageSrc: "./s.jpg",
+        },
+        {
+          name: "Raja Hassan",
+          role: "React Developer",
+          imageSrc: "./r.jpeg",
+        },
+        {
+          name: "Wasiq Ishtiaq",
+          role: ".Net Developer",
+          imageSrc: "./w.jpeg",
+        },
+        {
+          name: "Kamran Ali",
+          role: "Mobile Developer",
+          imageSrc: "./k.png",
+        },
+        // Add more Internes here
+      ],
+    },
+    // Add more employee groups here
+  ];
 
-  const [selectedContent, setSelectedContent] = useState(null);
-
-  const handleContentClick = (content) => {
-    setSelectedContent(content);
+  const toggleITEmployees = () => {
+    setShowITEmployees(!showITEmployees);
   };
 
-  const closeContentModal = () => {
-    setSelectedContent(null);
+  const toggleInternes = () => {
+    setShowInternes(!showInternes);
   };
+
   return (
     <div className="main-container">
-      <h2>Internes</h2>
+      <h2 onClick={toggleITEmployees}>IT Team</h2>
       <hr />
-      <div className="members">
-        <div className="team-member" onClick={() => handleImageClick('./s.jpg')}>
-          <img src="./s.jpg" alt="John Doe" />
-          <h4>Saad</h4>
-          <p>React Developer</p>
+      {showITEmployees && (
+        <div className="members">
+          {employees[0].members.map((employee, index) => (
+            <div
+              key={index}
+              className="team-member"
+              onClick={() => handleImageClick(employee.imageSrc)}
+            >
+              <img src={employee.imageSrc} alt={employee.name} />
+              <h4>{employee.name}</h4>
+              <p>{employee.role}</p>
+            </div>
+          ))}
         </div>
-        <div className="team-member" onClick={() => handleImageClick('./r.jpeg')}>
-          <img src="./r.jpeg" alt="John Doe" />
-          <h4>Raja Hassan</h4>
-          <p>React Developer</p>
+      )}
+
+      <h2 onClick={toggleInternes}>Internes</h2> {/* Clicking this heading toggles Internes */}
+      <hr />
+      {showInternes && (
+        <div className="members">
+          {employees[1].members.map((employee, index) => (
+            <div
+              key={index}
+              className="team-member"
+              onClick={() => handleImageClick(employee.imageSrc)}>
+              <img src={employee.imageSrc} alt={employee.name} />
+              <h4>{employee.name}</h4>
+              <p>{employee.role}</p>
+            </div>
+          ))}
         </div>
-        <div className="team-member" onClick={() => handleImageClick('./w.jpeg')}>
-          <img src="./w.jpeg" alt="John Doe" />
-          <h4>Wasiq Ishtiaq</h4>
-          <p>.Net Developer</p>
+      )}
+      {employees.slice(2).map((employeeGroup, groupIndex) => (
+        <div key={groupIndex}>
+          <h2>{employeeGroup.group}</h2>
+          <hr />
+          <div className="members">
+            {employeeGroup.members.map((employee, index) => (
+              <div
+                key={index}
+                className="team-member"
+                onClick={() => handleImageClick(employee.imageSrc)}
+              >
+                <img src={employee.imageSrc} alt={employee.name} />
+                <h4>{employee.name}</h4>
+                <p>{employee.role}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="team-member" onClick={() => handleImageClick('./k.png')}>
-          <img src="./k.png" alt="John Doe" />
-          <h4>Kamran Ali</h4>
-          <p>Mobile Developer</p>
-        </div>
-        <div className="team-member" onClick={() => handleImageClick('./5.png')}>
-          <img src="./5.png" alt="John Doe" />
-          <h4>Tayyaba</h4>
-          <p>ASP.Net Developer</p>
-        </div>
-        <div className="team-member" onClick={() => handleImageClick('./5.png')}>
-          <img src="./5.png" alt="John Doe" />
-          <h4>Sidra</h4>
-          <p>Angular Developer</p>
-        </div>
-      </div>
+      ))}
 
       {selectedImage && (
         <div className="image-modal" onClick={closeImageModal}>
           <div className="modal-content">
-            <img src={selectedImage} alt="Selected Image" />
-           
+            <img src={selectedImage} alt="Selected Image" className="image-transition" />
           </div>
         </div>
       )}
