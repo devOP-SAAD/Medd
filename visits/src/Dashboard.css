@@ -82,7 +82,7 @@ p {
     background: white;
     padding: 20px;
     border-radius: 5px;
-    box-shadow: 0 0 15px rgb(196 12 12);
+    box-shadow: 0 0 10px rgb(196 12 12);
     transition: all 0.9s; /* Add transition for a smooth effect */
   }
   
@@ -95,4 +95,11 @@ p {
   .image-modal:hover .image-transition {
     transform: scale(1.1); /* Adjust the scaling factor as per your preference */
   }
-  
+  #background-video {
+    position: relative;
+    top: 0;
+    left: 0;
+    min-width: 50%;
+    min-height: 50%;
+    z-index: -1; /* Place it behind other elements */
+  }

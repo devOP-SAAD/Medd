@@ -65,6 +65,7 @@ function LoginPage({ setAuthenticated, authenticated }) {
   };
 
   return (
+    <div className="main-container">
     <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }} onSubmit={handleSubmit}>
       <TextField
         label={isSignUp ? 'Full Name' : 'Email'}
@@ -72,7 +73,7 @@ function LoginPage({ setAuthenticated, authenticated }) {
         name={isSignUp ? 'fullName' : 'email'}
         value={formData[isSignUp ? 'fullName' : 'email']}
         onChange={handleChange}
-        style={{ margin: '10px', width: '100%',background:'white' }} // Set width to 100% for responsiveness
+        style={{ margin: '10px', width: '100%',background:'rgb(255 255 255)' }} // Set width to 100% for responsiveness
       />
       {isSignUp && (
         <TextField
@@ -81,7 +82,7 @@ function LoginPage({ setAuthenticated, authenticated }) {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          style={{ margin: '10px', width: '100%',background:'white' }}
+          style={{ margin: '10px', width: '100%',background:'white'}}
         />
       )}
       <TextField
@@ -109,11 +110,12 @@ function LoginPage({ setAuthenticated, authenticated }) {
         </Button>
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', width: '100%' }}>
-        <Link onClick={toggleSignUp} style={{ color: 'blue' }}>
+        <Link onClick={toggleSignUp} style={{ color: 'coral' }}>
           {isSignUp ? 'Back to Login' : 'Sign up'}
         </Link>
       </div>
     </form>
+    </div>
   );
 }
 
