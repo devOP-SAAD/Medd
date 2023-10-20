@@ -119,7 +119,7 @@ function LoginPage({ setAuthenticated, authenticated }) {
             onBlur={(e) => validateEmail(e.target.value)} // Validate email on blur
             error={emailError !== ''}
             helperText={emailError}
-            style={{ margin: '10px', width: '100%', background: 'white' }}
+            style={{ margin: '10px', width: '100%', background: 'whitesmoke' }}
           />
         )}
         <TextField
@@ -132,7 +132,7 @@ function LoginPage({ setAuthenticated, authenticated }) {
           onBlur={(e) => validatePassword(e.target.value)} // Validate password on blur
           error={passwordError !== ''}
           helperText={passwordError}
-          style={{ margin: '10px', width: '100%', background: 'white' }}
+          style={{ margin: '10px', width: '100%', background: 'whitesmoke' }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
