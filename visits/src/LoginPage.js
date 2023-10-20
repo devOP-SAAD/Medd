@@ -5,7 +5,6 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import ProtectedRoute from './ProtectedRoute';
 
 function LoginPage({ setAuthenticated, authenticated }) {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -17,6 +16,11 @@ function LoginPage({ setAuthenticated, authenticated }) {
   const [registeredUsers, setRegisteredUsers] = useState([]);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
@@ -34,10 +38,36 @@ function LoginPage({ setAuthenticated, authenticated }) {
     });
   };
 
+  const validateEmail = (email) => {
+    if (!emailRegex.test(email)) {
+      setEmailError('Invalid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const validatePassword = (password) => {
+    if (!passwordRegex.test(password)) {
+      setPasswordError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character.');
+    } else {
+      setPasswordError('');
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const { email, password } = formData;
+
+    validateEmail(email);
+    validatePassword(password);
+
+    if (emailError || passwordError) {
+      return;
+    }
+
     if (isSignUp) {
+      // Sign-up logic
       const newRegisteredUsers = [...registeredUsers, formData];
       localStorage.setItem('registeredUsers', JSON.stringify(newRegisteredUsers));
       console.log('Signup data:', formData);
@@ -49,9 +79,10 @@ function LoginPage({ setAuthenticated, authenticated }) {
         password: '',
       });
     } else {
+      // Login logic
       const storedUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
       const matchingUser = storedUsers.find(
-        (user) => user.email === formData.email && user.password === formData.password
+        (user) => user.email === email && user.password === password
       );
       if (matchingUser) {
         setAuthenticated(true);
@@ -66,55 +97,64 @@ function LoginPage({ setAuthenticated, authenticated }) {
 
   return (
     <div className="main-container">
-    <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }} onSubmit={handleSubmit}>
-      <TextField
-        label={isSignUp ? 'Full Name' : 'Email'}
-        required
-        name={isSignUp ? 'fullName' : 'email'}
-        value={formData[isSignUp ? 'fullName' : 'email']}
-        onChange={handleChange}
-        style={{ margin: '10px', width: '100%',background:'rgb(255 255 255)' }} // Set width to 100% for responsiveness
-      />
-      {isSignUp && (
+      <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px' }} onSubmit={handleSubmit}>
         <TextField
-          label="Email"
+          label={isSignUp ? 'Full Name' : 'Email'}
           required
-          name="email"
-          value={formData.email}
+          name={isSignUp ? 'fullName' : 'email'}
+          value={formData[isSignUp ? 'fullName' : 'email']}
           onChange={handleChange}
-          style={{ margin: '10px', width: '100%',background:'white'}}
+          onBlur={(e) => validateEmail(e.target.value)} // Validate email on blur
+          error={emailError !== ''}
+          helperText={emailError}
+          style={{ margin: '10px', width: '100%', background: 'rgb(255 255 255)' }}
         />
-      )}
-      <TextField
-        type={showPassword ? 'text' : 'password'}
-        label={isSignUp ? 'Create Password' : 'Password'}
-        required
-        name={isSignUp ? 'password' : 'password'}
-        value={formData.password}
-        onChange={handleChange}
-        style={{ margin: '10px', width: '100%',background:'white' }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleTogglePasswordVisibility}>
-                {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
-      />
+        {isSignUp && (
+          <TextField
+            label="Email"
+            required
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={(e) => validateEmail(e.target.value)} // Validate email on blur
+            error={emailError !== ''}
+            helperText={emailError}
+            style={{ margin: '10px', width: '100%', background: 'white' }}
+          />
+        )}
+        <TextField
+          type={showPassword ? 'text' : 'password'}
+          label={isSignUp ? 'Create Password' : 'Password'}
+          required
+          name={isSignUp ? 'password' : 'password'}
+          value={formData.password}
+          onChange={handleChange}
+          onBlur={(e) => validatePassword(e.target.value)} // Validate password on blur
+          error={passwordError !== ''}
+          helperText={passwordError}
+          style={{ margin: '10px', width: '100%', background: 'white' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleTogglePasswordVisibility}>
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
 
-      <div style={{ marginTop: '10px', width: '100%' }}>
-        <Button type="submit" variant="contained" color="primary" style={{ borderRadius: '30px', width: '100%' }}>
-          {isSignUp ? 'Sign up' : 'Login'}
-        </Button>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', width: '100%' }}>
-        <Link onClick={toggleSignUp} style={{ color: 'coral' }}>
-          {isSignUp ? 'Back to Login' : 'Sign up'}
-        </Link>
-      </div>
-    </form>
+        <div style={{ marginTop: '10px', width: '100%' }}>
+          <Button type="submit" variant="contained" color="primary" style={{ borderRadius: '30px', width: '100%' }}>
+            {isSignUp ? 'Sign up' : 'Login'}
+          </Button>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', width: '100%' }}>
+          <Link onClick={toggleSignUp} style={{ color: 'coral' }}>
+            {isSignUp ? 'Back to Login' : 'Sign up'}
+          </Link>
+        </div>
+      </form>
     </div>
   );
 }

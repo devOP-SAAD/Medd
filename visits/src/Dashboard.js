@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import './Dashboard.css';
 import backgroundVideo from './v.mp4';
-function Dashboard() {
+import { Button } from '@mui/material';
+function Dashboard({setAuthenticated}) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [showITEmployees, setShowITEmployees] = useState(false);
   const [showInternes, setShowInternes] = useState(false);
+ 
+const Logout = () => {
+  setAuthenticated(false);
+  localStorage.clear();
+}
  
   const handleImageClick = (imageSrc) => {
     setSelectedImage(imageSrc);
@@ -79,13 +85,12 @@ function Dashboard() {
   };
 
   return (
-
+    
+   
+   
     <div className="main-container">
-    
+    <Button style={{background:'dodgerblue',color:'white'}} onClick={Logout}>Logout</Button>
 
-
-    
-    
       <h2 onClick={toggleITEmployees}>IT Team</h2>
       <hr />
       {showITEmployees && <EmployeeGroup members={employees[0].members} handleImageClick={handleImageClick} />}
@@ -113,9 +118,8 @@ function EmployeeGroup({ members, handleImageClick }) {
         <div
           key={index}
           className="team-member"
-          onClick={() => handleImageClick(employee.imageSrc)}
-        >
-          <img src={employee.imageSrc} alt={employee.name} />
+          onClick={() => handleImageClick(employee.imageSrc)}>
+          <img src={employee.imageSrc} alt={employee.name}/>
           <h4>{employee.name}</h4>
           <p>{employee.role}</p>
         </div>
@@ -134,7 +138,13 @@ function ImageModal({ selectedImage, uploadedImage, handleImageUpload, closeImag
     </video>
      
     </div>
+    
   );
+  
 }
 
 export default Dashboard;
+
+
+
+

@@ -6,7 +6,7 @@ function ProtectedRoute({ authenticated, children }) {
   if (authenticated) {
     return children;
   } else {
-    return <Navigate to="/" />;
+    return <Navigate to="/"/>;
   }
 }
 
